@@ -1,4 +1,4 @@
-import pygame, random
+import pygame, random, time
 from pygame.locals import *
 
 def on_grid_random():        
@@ -15,9 +15,28 @@ def collision(c1, c2):
     return(c1[0] == c2[0] and c1[1] == c2[1]) 
 
 
+def cores():
+    r = random.randint(0,255)
+    g = random.randint(0,255)
+    b = random.randint(0,255)
+    return ((r,g,b))
+
+def tempo():
+    
+    while not game_over:
+        time.sleep(1)
+        contador.append(1)
+        break
+        
+    return Int.contador
+
 pygame.init()
 screen = pygame.display.set_mode((600,600)) #tamanho tabuleiro
 pygame.display.set_caption('Snake')
+
+audio_maca = pygame.mixer.Sound('comeu.ogg') #audio comeu maça
+
+contador = 0
 
 
 # Definiçoes da cobra
@@ -28,7 +47,7 @@ snake_skin.fill((255,255,255))
 # Definiçções da big maça
 bigapple_pos = on_grid_random2()
 bigapple = pygame.Surface((20,20))
-bigapple.fill((255,0,0))
+bigapple.fill(cores())
 
 # Definiçções da maça
 apple_pos = on_grid_random()
@@ -48,9 +67,12 @@ clock = pygame.time.Clock()
 font = pygame.font.Font('freesansbold.ttf', 18)
 score = 0
 
+
 game_over = False
 
 while not game_over:
+    
+    
     
     clock.tick(10) #definindo fps / velocidade da cobra
     
@@ -73,11 +95,14 @@ while not game_over:
                 my_direction = LEFT
                 
     if collision(snake[0], apple_pos): # pegou a maça
-        apple_pos = on_grid_random()
+        audio_maca.play() # play audio comeu maça
+        apple_pos = on_grid_random() 
         snake.append((0,0))
         score = score + 1
         
-    if collision(snake[0], bigapple_pos): # pegou a maça
+    if collision(snake[0], bigapple_pos): # pegou a big maça
+        bigapple.fill(cores())
+        audio_maca.play()
         bigapple_pos = on_grid_random2()
         snake.append((0,0))
         score = score + 4
@@ -125,6 +150,13 @@ while not game_over:
     score_rect.topleft = (600 -120,10)
     screen.blit(score_font,score_rect)
     
+    # Definições TEMPORIZADOR
+    tempo_font = font
+    tempo_screen = font.render ('TEMPO : '+ str(contador), True , (255,255,255))
+    tempo_rect = tempo_screen.get_rect()
+    tempo_rect.topleft = (600 -220,10)
+    screen.blit(tempo_screen,tempo_rect)
+    pygame.display.update()
     
     
     for pos in snake:
@@ -134,7 +166,7 @@ while not game_over:
     pygame.display.update()
     
 while game_over:
-    game_over_font = pygame.font.Font('freesansbold.ttf, 50')
+    game_over_font = font #pygame.font.Font('freesansbold.ttf, 50')
     game_over_screen = game_over_font.render('GAME OVER', True , (255,255,255))
     game_over_rect = game_over_screen.get_rect()
     game_over_rect.midtop =(600 / 2 , 10)
