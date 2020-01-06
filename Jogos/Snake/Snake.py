@@ -21,23 +21,26 @@ def cores():
     b = random.randint(0,255)
     return ((r,g,b))
 
+
+
 def tempo():
     
     while not game_over:
         time.sleep(1)
-        contador.append(1)
+        contador = contador + 1
         break
         
     return Int.contador
 
+#Definições Gerais
 pygame.init()
 screen = pygame.display.set_mode((600,600)) #tamanho tabuleiro
 pygame.display.set_caption('Snake')
-
 audio_maca = pygame.mixer.Sound('comeu.ogg') #audio comeu maça
-
+clock = pygame.time.Clock()
+font = pygame.font.Font('freesansbold.ttf', 18)
+score = 0
 contador = 0
-
 
 # Definiçoes da cobra
 snake =[(200, 200),(210, 200),(220,200)] 
@@ -54,7 +57,7 @@ apple_pos = on_grid_random()
 apple = pygame.Surface((10,10))
 apple.fill((255,0,0))
 
-# direção do movimento
+# Direção do movimento
 UP = 0
 RIGHT = 1
 DOWN = 2
@@ -62,19 +65,23 @@ LEFT = 3
 
 my_direction = LEFT
 
-clock = pygame.time.Clock()
-
-font = pygame.font.Font('freesansbold.ttf', 18)
-score = 0
-
-
+# Inicio
 game_over = False
 
 while not game_over:
     
-    
-    
-    clock.tick(10) #definindo fps / velocidade da cobra
+    # Mecanismos de velocidades/fps
+    if score>10:
+        clock.tick(30) 
+    elif score>20:
+        clock.tick(50) 
+    else:
+        if score>30:
+            clock.tick(60) 
+        elif score>40:
+            clock.tick(70) 
+        else:
+            clock.tick(15) 
     
     for event in pygame.event.get():
         if event.type == QUIT:
@@ -123,6 +130,7 @@ while not game_over:
     for i in range(len(snake) -1, 0, -1): 
         snake[i] = (snake[i - 1][0], snake[i - 1][1])
     
+    #Direcionamento
     if my_direction == UP:
         snake[0] = (snake[0][0], snake[0][1] - 10)
     if my_direction == DOWN:
@@ -144,13 +152,17 @@ while not game_over:
         pygame.draw.line(screen,(40,40,40), (0 ,y ),(600, y)) 
         
         
-        # Definições placar 
+    # Definições placar 
+    
+    
     score_font = font.render ('SCORE: %s' %(score), True , (255,255,255))
     score_rect = score_font.get_rect()
     score_rect.topleft = (600 -120,10)
     screen.blit(score_font,score_rect)
     
     # Definições TEMPORIZADOR
+    
+
     tempo_font = font
     tempo_screen = font.render ('TEMPO : '+ str(contador), True , (255,255,255))
     tempo_rect = tempo_screen.get_rect()
