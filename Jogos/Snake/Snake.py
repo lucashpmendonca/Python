@@ -23,14 +23,7 @@ def cores():
 
 
 
-def tempo():
-    
-    while not game_over:
-        time.sleep(1)
-        contador = contador + 1
-        break
-        
-    return Int.contador
+
 
 #Definições Gerais
 pygame.init()
@@ -40,7 +33,7 @@ audio_maca = pygame.mixer.Sound('comeu.ogg') #audio comeu maça
 clock = pygame.time.Clock()
 font = pygame.font.Font('freesansbold.ttf', 18)
 score = 0
-contador = 0
+
 
 # Definiçoes da cobra
 snake =[(200, 200),(210, 200),(220,200)] 
@@ -153,8 +146,7 @@ while not game_over:
         
         
     # Definições placar 
-    
-    
+        
     score_font = font.render ('SCORE: %s' %(score), True , (255,255,255))
     score_rect = score_font.get_rect()
     score_rect.topleft = (600 -120,10)
@@ -162,13 +154,25 @@ while not game_over:
     
     # Definições TEMPORIZADOR
     
+    total_segs = pygame.time.get_ticks()/1000
+    horas = total_segs // 3600
+    segs_restantes = total_segs % 3600
+    minutos = segs_restantes // 60
+    segs_restantes_final = segs_restantes % 60
+        contador = (horas ,minutos,segs_restantes_final)
+ 
 
-    tempo_font = font
-    tempo_screen = font.render ('TEMPO : '+ str(contador), True , (255,255,255))
-    tempo_rect = tempo_screen.get_rect()
-    tempo_rect.topleft = (600 -220,10)
-    screen.blit(tempo_screen,tempo_rect)
-    pygame.display.update()
+
+        
+    while not game_over:
+        tempo_font = font
+        tempo_screen = font.render ('TEMPO : '+str(contador), False , (255,255,255))
+        tempo_rect = tempo_screen.get_rect()
+        tempo_rect.topleft = (600 -600,10)
+        
+        screen.blit(tempo_screen,tempo_rect)
+        
+        break  
     
     
     for pos in snake:
@@ -178,10 +182,10 @@ while not game_over:
     pygame.display.update()
     
 while game_over:
-    game_over_font = font #pygame.font.Font('freesansbold.ttf, 50')
-    game_over_screen = game_over_font.render('GAME OVER', True , (255,255,255))
+    game_over_font = pygame.font.Font('freesansbold.ttf', 50)
+    game_over_screen = game_over_font.render('GAME OVER', True , (255,0,0))
     game_over_rect = game_over_screen.get_rect()
-    game_over_rect.midtop =(600 / 2 , 10)
+    game_over_rect.midtop =(600 / 2 , 600/2)
     screen.blit(game_over_screen, game_over_rect)
     pygame.display.update()
     pygame.time.wait(500)
