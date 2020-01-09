@@ -21,6 +21,37 @@ def cores():
     b = random.randint(0,255)
     return ((r,g,b))
 
+def game_intro():
+    intro = True
+    
+
+    while intro:
+        for event in pygame.event.get():
+            #print(event)
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+                
+        screen.fill((255,255,255))
+        intro_font = pygame.font.Font('freesansbold.ttf',115)
+        intro_font_screen = font.render ('inicio', True , (0,0,0))
+        intro_font_rect = intro_font_screen.get_rect()
+        intro_font_rect.midtop = ((600/2),(600/2))
+        
+        mouse = pygame.mouse.get_pos()
+        pygame.draw.rect(screen, (0,255,0),(250,250,150,100))
+        screen.blit(intro_font_screen,intro_font_rect)
+        pygame.display.update()
+        
+        click = pygame.mouse.get_pressed()[0]
+        if mouse[0] > 250 and mouse[0] < 250+150 and mouse[1] > 250 and mouse[1] < 250+100:
+        #if 250+150 > mouse[0] > 250 and 250+100 > mouse[1] > 250:
+                intro_font_screen.fill((100,255,100))
+                pygame.display.update()
+                if pygame.mouse.get_pressed()[0]:
+                    intro = False
+                    pass
+    pass
 
 
 
@@ -60,6 +91,9 @@ my_direction = LEFT
 
 # Inicio
 game_over = False
+
+game_intro()
+
 
 while not game_over:
     
@@ -159,8 +193,9 @@ while not game_over:
     segs_restantes = total_segs % 3600
     minutos = segs_restantes // 60
     segs_restantes_final = segs_restantes % 60
-        contador = (horas ,minutos,segs_restantes_final)
- 
+    contador = int(horas) ,int(minutos), round(segs_restantes_final,1)
+    #contador = ("{horas:0>2}:{minutos:0>2}:{segs_restantes_final:05.3f}".format(hours=horas, minutes=minutos, seconds=segs_restantes_final))
+
 
 
         
@@ -189,8 +224,9 @@ while game_over:
     screen.blit(game_over_screen, game_over_rect)
     pygame.display.update()
     pygame.time.wait(500)
-    while True:
-        for event in pygame.event.get():
-            pygame.time.wait(500)
-            pygame.quit()
-            exit()
+    game_over = False
+    iniciar = False
+    score = 0
+    pygame.display.update()
+    pygame.init()
+    game_intro()
