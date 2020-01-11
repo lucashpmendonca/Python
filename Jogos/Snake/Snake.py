@@ -1,5 +1,6 @@
 import pygame, random, time
 from pygame.locals import *
+from pygame import mixer
 
 def on_grid_random():        
     x = random.randint(0,590)
@@ -21,9 +22,13 @@ def cores():
     b = random.randint(0,255)
     return ((r,g,b))
 
+def mutee():
+    global mute 
+    mute = True
+
 def game_intro():
     intro = True
-    
+    mouse = pygame.mouse.get_pos()
 
     while intro:
         for event in pygame.event.get():
@@ -32,25 +37,50 @@ def game_intro():
                 pygame.quit()
                 quit()
                 
+        mouse = pygame.mouse.get_pos()
         screen.fill((255,255,255))
         intro_font = pygame.font.Font('freesansbold.ttf',115)
         intro_font_screen = font.render ('inicio', True , (0,0,0))
         intro_font_rect = intro_font_screen.get_rect()
+
         intro_font_rect.midtop = ((600/2),(600/2))
-        
-        mouse = pygame.mouse.get_pos()
+
         pygame.draw.rect(screen, (0,255,0),(250,250,150,100))
         screen.blit(intro_font_screen,intro_font_rect)
-        pygame.display.update()
+        pygame.draw.rect(screen, (0,255,0),(0,0,70,70)) #botao mute
         
+        # click para mute
+        if mouse[0] > 0 and mouse[0] < 0+70 and mouse[1] > 0 and mouse[1] < 0+70:
+            pygame.display.update()
+            if pygame.mouse.get_pressed()[0]:
+                mutee()
+                pygame.draw.rect(screen, (255,255,0),(0,0,70,70))
+                print(mute)
+                
+                
+            
+
+        #pygame.display.update()
+        mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()[0]
         if mouse[0] > 250 and mouse[0] < 250+150 and mouse[1] > 250 and mouse[1] < 250+100:
-        #if 250+150 > mouse[0] > 250 and 250+100 > mouse[1] > 250:
                 intro_font_screen.fill((100,255,100))
                 pygame.display.update()
                 if pygame.mouse.get_pressed()[0]:
+                    #print(intro)
                     intro = False
                     pass
+    pass
+
+def som():
+    print(mute)
+    if not mute:
+        try:
+            audio_maca.play()
+        except mute == True:
+            pass
+        pass
+        
     pass
 
 
@@ -58,9 +88,10 @@ def game_intro():
 
 #Definições Gerais
 pygame.init()
+pygame.mixer.init()
+audio_maca = pygame.mixer.Sound('/home/lucas/Python/Jogos/Snake/comeu.ogg') #audio comeu maça
 screen = pygame.display.set_mode((600,600)) #tamanho tabuleiro
 pygame.display.set_caption('Snake')
-audio_maca = pygame.mixer.Sound('comeu.ogg') #audio comeu maça
 clock = pygame.time.Clock()
 font = pygame.font.Font('freesansbold.ttf', 18)
 score = 0
@@ -91,7 +122,7 @@ my_direction = LEFT
 
 # Inicio
 game_over = False
-
+mute = False
 game_intro()
 
 
@@ -129,18 +160,17 @@ while not game_over:
                 my_direction = LEFT
                 
     if collision(snake[0], apple_pos): # pegou a maça
-        audio_maca.play() # play audio comeu maça
+        som()
         apple_pos = on_grid_random() 
         snake.append((0,0))
         score = score + 1
         
     if collision(snake[0], bigapple_pos): # pegou a big maça
         bigapple.fill(cores())
-        audio_maca.play()
+        som()
         bigapple_pos = on_grid_random2()
         snake.append((0,0))
         score = score + 4
-        
         
     if snake[0][0] == 600 or snake[0][1] == 600 or snake[0][0] < 0 or snake[0][1] < 0 : # borda
         game_over = True 
