@@ -28,7 +28,6 @@ def mutee():
 
 def game_intro():
     intro = True
-    mouse = pygame.mouse.get_pos()
 
     while intro:
         for event in pygame.event.get():
@@ -42,9 +41,7 @@ def game_intro():
         intro_font = pygame.font.Font('freesansbold.ttf',115)
         intro_font_screen = font.render ('inicio', True , (0,0,0))
         intro_font_rect = intro_font_screen.get_rect()
-
         intro_font_rect.midtop = ((600/2),(600/2))
-
         pygame.draw.rect(screen, (0,255,0),(250,250,150,100))
         screen.blit(intro_font_screen,intro_font_rect)
         pygame.draw.rect(screen, (0,255,0),(0,0,70,70)) #botao mute
@@ -60,20 +57,20 @@ def game_intro():
                 
             
 
-        #pygame.display.update()
+        #clique para inicar o jogo
         mouse = pygame.mouse.get_pos()
         click = pygame.mouse.get_pressed()[0]
         if mouse[0] > 250 and mouse[0] < 250+150 and mouse[1] > 250 and mouse[1] < 250+100:
                 intro_font_screen.fill((100,255,100))
                 pygame.display.update()
                 if pygame.mouse.get_pressed()[0]:
-                    #print(intro)
+                    #print(intro) #teste
                     intro = False
                     pass
     pass
 
 def som():
-    print(mute)
+    #print(mute) #teste 
     if not mute:
         try:
             audio_maca.play()
@@ -95,6 +92,9 @@ pygame.display.set_caption('Snake')
 clock = pygame.time.Clock()
 font = pygame.font.Font('freesansbold.ttf', 18)
 score = 0
+
+#BACKGROUND = pygame.image.load('grama.jpg')
+#BACKGROUND = pygame.transform.scale(BACKGROUND, (600, 600))
 
 
 # Definiçoes da cobra
@@ -127,6 +127,8 @@ game_intro()
 
 
 while not game_over:
+
+    #screen.blit(BACKGROUND, (0,0))
     
     # Mecanismos de velocidades/fps
     if score>10:
@@ -243,7 +245,7 @@ while not game_over:
     for pos in snake:
         screen.blit(snake_skin,pos)
         
-    
+    #screen.blit(BACKGROUND, (0,0))
     pygame.display.update()
     
 while game_over:
