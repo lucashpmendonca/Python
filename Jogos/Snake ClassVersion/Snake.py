@@ -1,5 +1,3 @@
-
-
 import pygame, sys
 from pygame.locals import *
 from random import randint
@@ -87,20 +85,17 @@ class Game():
                 #Changing direction
                     if ((event.key == K_LEFT or event.key == ord('o'))
                         and self.snake.direction!=RIGHT):
-                            #dead=self.snake.update(LEFT,self.width,self.height)
                             self.snake.direction=LEFT
                     elif ((event.key == K_RIGHT or event.key == ord('p'))
                         and self.snake.direction!=LEFT):
-                            #dead=self.snake.update(RIGHT,self.width,self.height)
                             self.snake.direction=RIGHT
                     elif ((event.key == K_UP or event.key == ord('q'))
                         and self.snake.direction!=DOWN):
-                            #dead=self.snake.update(UP,self.width,self.height)
                             self.snake.direction=UP
                     elif ((event.key == K_DOWN or event.key == ord('a'))
                         and self.snake.direction!=UP):
-                            #dead=self.snake.update(DOWN,self.width,self.height)
                             self.snake.direction=DOWN
+                            
             
             
 
@@ -114,7 +109,7 @@ class Game():
             #Inserts the new head into the body
             self.snake.body.insert(0,list(self.snake.head))
 
-            #Eats the food
+            #Eat food
             if self.snake.head[0]==self.food.foodXY[0] and self.snake.head[1]==self.food.foodXY[1]:
                 self.food=Food(self.snake)
                 self.incPoints()
@@ -140,18 +135,13 @@ class Game():
         pygame.quit()
 
     def incPoints(self):
-        #Update score
         self.points=self.points+100
 
     def drawScore(self):
-        """Draw the score on screen
-        """
         surface = self.font.render("Points: "+str(self.points), True, GRAY)
         self.screen.blit(surface, (15, 25))
 
     def drawTime(self):
-        """Draw time on screen
-        """
         total_segs = pygame.time.get_ticks()/1000
         horas = total_segs // 3600
         segs_restantes = total_segs % 3600
@@ -163,17 +153,15 @@ class Game():
         self.screen.blit(time, (200, 25))
 
     def drawSnake(self):
-        # Draw Snake
         for x in self.snake.body:
             pygame.draw.rect(self.screen,GREEN, Rect(x,(10,10)))
 
     def drawFood(self):
-        #Draw Food
         pygame.draw.rect(self.screen,RED, Rect(self.food.foodXY,(10,10)))
-    
+        
     def drawBigFood(self):
-        #Draw BigFood
         pygame.draw.rect(self.screen,RED, Rect(self.bigfood.bigfoodXY,(40,40)))
+    
 
 class Snake():
     
@@ -189,7 +177,7 @@ class Snake():
 
     def update(self,direction,width,height):
         """Updates the head position of the snake.
-           Returns 1 if head is off-limits on the game area.
+        Returns 1 if head is off-limits on the game area.
         """
         if direction==RIGHT:
             self.head[0]+=10
@@ -240,9 +228,7 @@ class BigFood():
                 break
 
 
-################################################################################
 #Main
-################################################################################
 
 if __name__ == "__main__":
     #call
