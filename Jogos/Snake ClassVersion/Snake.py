@@ -50,7 +50,7 @@ class Game():
                         quit()
                         
                 mouse = pygame.mouse.get_pos()
-                '''
+                ''' # bug começa aqui
                 self.background.fill((255,255,255))
                 self.intro_font = pygame.font.Font('freesansbold.ttf',115)
                 self.intro_font_screen = self.intro_font.render ('click ou aperte ESPAÇO para começar', True , (0,0,0))
@@ -75,7 +75,7 @@ class Game():
                 mouse = pygame.mouse.get_pos()
                 click = pygame.mouse.get_pressed()[0]
                 if mouse[0] > 250 and mouse[0] < 250+150 and mouse[1] > 250 and mouse[1] < 250+100:
-                        #self.intro_font_screen.fill((100,255,100))
+                        
                         pygame.display.update()
                         if pygame.mouse.get_pressed()[0]:
                             #print(intro) #teste
